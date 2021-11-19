@@ -1,0 +1,34 @@
+version: "3.6"
+
+services:
+  mysql:
+    image: beercan1989/arm-mysql
+    volumes:
+      - ./srv/db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: somewordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+
+  wordpress:
+    image: wordpress:5.7.2
+    volumes:
+      - ./srv/wordpress_data:/var/www/html
+    ports:
+      - 8000:80
+    restart: always
+    environment:
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+
+  phpmyadmin:
+    image: phpmyadmin:apache
+    restart: always
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: somewordpress
+    ports:
+      - 8080:80
